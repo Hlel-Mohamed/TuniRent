@@ -9,10 +9,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name="advert")
-public class Advert {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Advert extends Post{
     @Column(name = "location", nullable = false)
     private String location;
     @Column(name = "price", nullable = false)
@@ -26,7 +23,4 @@ public class Advert {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "advert_id")
     private List<Image> images = new ArrayList<>();
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "client_id")
-    private Client creator;
 }
