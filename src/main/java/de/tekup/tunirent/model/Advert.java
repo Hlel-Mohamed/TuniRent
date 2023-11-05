@@ -16,6 +16,7 @@ public class Advert extends Post{
     private double price;
     @Column(name="description")
     private String description;
+    @Enumerated
     @Column(name="type", nullable = false)
     private lodgingType type;
     @Column(name="number_of_places", nullable = false)
