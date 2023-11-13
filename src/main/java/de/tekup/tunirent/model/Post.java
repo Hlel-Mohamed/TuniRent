@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="post")
-public class Post {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "client_id")
-    private Client creator;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User creator;
 }
