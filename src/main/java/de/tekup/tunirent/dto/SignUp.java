@@ -14,6 +14,8 @@ public class SignUp {
     private String lastName;
     @NotNull @NotEmpty @NotBlank
     private String username;
+    @NotNull @NotEmpty @NotBlank
+    private String phone;
     @NotNull @NotEmpty @NotBlank @Email
     private String email;
     @NotNull @ValidPassword
