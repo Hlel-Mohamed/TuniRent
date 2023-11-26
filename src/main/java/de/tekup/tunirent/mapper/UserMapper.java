@@ -26,6 +26,7 @@ public class UserMapper<T> {
         user.setEmail(signUpDto.getEmail());
         user.setFirstName(signUpDto.getFirstName());
         user.setLastName(signUpDto.getLastName());
+        user.setPhone(signUpDto.getPhone());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         Role role = determineUserRole(signUpDto.getRole());
         user.setRole(role);

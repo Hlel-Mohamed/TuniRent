@@ -1,13 +1,14 @@
 package de.tekup.tunirent.service;
 
+import de.tekup.tunirent.dto.AdvertDTO;
+import de.tekup.tunirent.enums.LodgingType;
 import de.tekup.tunirent.model.Advert;
 
 import java.util.List;
-public interface AdvertService {
-    Advert saveAdvert(Advert advert);
-    List<Advert> getAllAdverts();
-    List<Advert> getAllAdvertsByCreatorId(Long creatorId);
-    Advert getAdvertById(Long id);
-    Advert updateAdvert(Advert advert, Long id);
-    void deleteAdvertById(Long id);
+public interface AdvertService extends PostService{
+    AdvertDTO saveAdvert(Advert advert);
+    AdvertDTO updateAdvert(Advert advert, Long id);
+    List<AdvertDTO> searchAdvertByLocation(String location);
+    List<AdvertDTO> sortByPrice(double price);
+    List<AdvertDTO> searchAdvertByType(LodgingType type);
 }
