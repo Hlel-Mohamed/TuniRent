@@ -1,32 +1,27 @@
 package de.tekup.tunirent.model;
 
-import de.tekup.tunirent.enums.LodgingType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class Advert extends Post {
-    @NotNull
+@Table(name="advert")
+public class Advert extends Post{
+    @Column(name = "location", nullable = false)
     private String location;
-    @NotNull
+    @Column(name = "price", nullable = false)
     private double price;
+    @Column(name="description")
     private String description;
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private LodgingType type;
-    @NotNull
-    @Size(min = 1, max = 5)
+    @Enumerated
+    @Column(name="type", nullable = false)
+    private lodgingType type;
+    @Column(name="number_of_places", nullable = false)
     private int numberOfPlaces;
-    @ElementCollection
-    @CollectionTable(name = "advert_images", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "image")
-    private List<String> images = new ArrayList<>(5);
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "advert_id")
+    private List<Image> images = new ArrayList<>();
 }
