@@ -1,11 +1,15 @@
 package de.tekup.tunirent.repository;
 
+import de.tekup.tunirent.enums.LodgingType;
 import de.tekup.tunirent.model.Advert;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-@Repository
-public interface AdvertRepository extends JpaRepository<Advert, Long> {
-    List<Advert> findByCreatorId(Long creatorId);
+import java.util.Optional;
+
+public interface AdvertRepository extends PostRepository<Advert> {
+    Optional<Advert> update(Advert advert, Long id);
+    List<Advert> findByLocation(String location);
+    List<Advert> findByPriceLessThanEqualOrderByPrice(double price);
+    List<Advert> findByType(LodgingType type);
 }

@@ -1,4 +1,16 @@
 package de.tekup.tunirent.repository;
 
-public interface PostRepository {
+import de.tekup.tunirent.model.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
+
+import java.util.List;
+import java.util.Optional;
+
+@NoRepositoryBean
+public interface PostRepository<T extends Post> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+    List<T> findAll();
+    List<T> findAllByCreatorId(Long creatorId);
+    Optional<T> findById(Long id);
 }
