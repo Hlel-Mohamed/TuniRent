@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
@@ -58,9 +59,15 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
     @Bean
     public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf(AbstractHttpConfigurer::disable)
+
+
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests ->
@@ -73,14 +80,16 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST, "/api/user/create").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/user/update/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/api/user/delete/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/search").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/find").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
-
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
-                ).authenticationProvider(authProvider());
+                                .anyRequest()
+                                .authenticated()
+                ).authenticationProvider(authProvider()
+                );
+
         return http.build();
     }
 
