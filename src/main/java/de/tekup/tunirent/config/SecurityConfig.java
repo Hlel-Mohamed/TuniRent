@@ -60,8 +60,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
-
-
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -75,16 +73,14 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST, "/api/user/create").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/user/update/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/user/delete/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/search").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/find").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
 
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
-                ).authenticationProvider(authProvider()
-                );
-
+                ).authenticationProvider(authProvider());
         return http.build();
     }
 
