@@ -21,24 +21,6 @@ public abstract class PostServiceImpl<T extends Post> implements PostService {
     protected PostMapper<T> postMapper;
 
     @Override
-    public List<PostDTO> getAll() {
-        List<T> posts = getRepository().findAll();
-        return posts.stream().map(this.postMapper::convertToDTO).toList();
-    }
-
-    @Override
-    public List<PostDTO> getAllByCreatorId(Long creatorId) {
-        List<T> posts = getRepository().findAllByCreatorId(creatorId);
-        return posts.stream().map(this.postMapper::convertToDTO).toList();
-    }
-
-    @Override
-    public PostDTO getById(Long id) {
-        T post = getRepository().findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
-        return postMapper.convertToDTO(post);
-    }
-
-    @Override
     public void deleteById(Long id) {
         getRepository().deleteById(id);
     }

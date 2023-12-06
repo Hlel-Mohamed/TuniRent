@@ -85,10 +85,21 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/user/find").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.POST, "/api/advert/create").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/advert/update/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/advert/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/advert/search").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/advert/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).authenticationProvider(authProvider()
-                );
+                ).authenticationProvider(authProvider())
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/api/auth/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
+                ;
 
         return http.build();
     }

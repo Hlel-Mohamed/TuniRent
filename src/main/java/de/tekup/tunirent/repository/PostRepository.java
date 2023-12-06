@@ -10,7 +10,5 @@ import java.util.Optional;
 
 @NoRepositoryBean
 public interface PostRepository<T extends Post> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
-    List<T> findAll();
     List<T> findAllByCreatorId(Long creatorId);
-    Optional<T> findById(Long id);
 }

@@ -11,6 +11,7 @@ public class AdvertMapper<T> {
     public AdvertDTO convertToDTO(Advert entity) {
         AdvertDTO advertDTO = new AdvertDTO();
         BeanUtils.copyProperties(entity, advertDTO);
+        advertDTO.setCreatorId(entity.getCreator().getId());
         return advertDTO;
     }
     public Advert convertToEntity(AdvertRequest advertRequest){
