@@ -143,7 +143,7 @@ public class UserServiceImpl extends PersonServiceImpl<User> implements UserServ
         return userMapper.convertToDTO(user);
     }
 
-    private User getCurrentLoggedInUser() {
+    User getCurrentLoggedInUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(email)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE));

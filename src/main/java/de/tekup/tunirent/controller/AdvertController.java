@@ -2,8 +2,8 @@ package de.tekup.tunirent.controller;
 
 import de.tekup.tunirent.dto.AdvertDTO;
 import de.tekup.tunirent.dto.AdvertRequest;
-import de.tekup.tunirent.dto.PostDTO;
 import de.tekup.tunirent.enums.LodgingType;
+import de.tekup.tunirent.exception.AdvertNotFoundException;
 import de.tekup.tunirent.mapper.AdvertMapper;
 import de.tekup.tunirent.service.AdvertService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,17 +23,6 @@ public class AdvertController {
     private AdvertService advertService;
     private AdvertMapper advertMapper;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostDTO>> getAll() {
-        List<PostDTO> posts = advertService.getAll();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getById(@PathVariable Long id) {
-        PostDTO post = advertService.getById(id);
-        return new ResponseEntity<>(post, HttpStatus.OK);
-    }
 
     @PostMapping("/create")
     public ResponseEntity<AdvertDTO> createAdvert(@RequestBody AdvertRequest advertRequest) {
@@ -59,9 +48,9 @@ public class AdvertController {
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/search/price/{price}")
-    public ResponseEntity<List<AdvertDTO>> searchAdvertsByPrice(@PathVariable double price) {
-        List<AdvertDTO> adverts = advertService.sortByPrice(price);
+    @GetMapping("/search/price")
+    public ResponseEntity<List<AdvertDTO>> searchAdvertsByPrice() {
+        List<AdvertDTO> adverts = advertService.sortByPrice();
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
@@ -69,5 +58,21 @@ public class AdvertController {
     public ResponseEntity<List<AdvertDTO>> searchAdvertsByType(@PathVariable LodgingType type) {
         List<AdvertDTO> adverts = advertService.searchAdvertByType(type);
         return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<AdvertDTO>> getAll() {
+        List<AdvertDTO> adverts = advertService.getAll();
+        return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            AdvertDTO adverts = advertService.getById(id);
+            return new ResponseEntity<>(adverts, HttpStatus.OK);
+        } catch (AdvertNotFoundException e) {
+            return new ResponseEntity<>("Advert not found", HttpStatus.NOT_FOUND);
+        }
     }
 }
