@@ -2,8 +2,8 @@ package de.tekup.tunirent.controller;
 
 import de.tekup.tunirent.dto.AdvertDTO;
 import de.tekup.tunirent.dto.AdvertRequest;
-import de.tekup.tunirent.dto.PostDTO;
 import de.tekup.tunirent.enums.LodgingType;
+import de.tekup.tunirent.exception.AdvertNotFoundException;
 import de.tekup.tunirent.mapper.AdvertMapper;
 import de.tekup.tunirent.service.AdvertService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,17 +23,6 @@ public class AdvertController {
     private AdvertService advertService;
     private AdvertMapper advertMapper;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostDTO>> getAll() {
-        List<PostDTO> posts = advertService.getAll();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getById(@PathVariable Long id) {
-        PostDTO post = advertService.getById(id);
-        return new ResponseEntity<>(post, HttpStatus.OK);
-    }
 
     @PostMapping("/create")
     public ResponseEntity<AdvertDTO> createAdvert(@RequestBody AdvertRequest advertRequest) {
@@ -53,21 +42,39 @@ public class AdvertController {
         return ResponseEntity.ok("Advert deleted successfully!");
     }
 
-    @GetMapping("/search/location/{location}")
+    @GetMapping("/creator/{id}")
+    public ResponseEntity<List<AdvertDTO>> searchAdvertsByCreatorId(@PathVariable Long id) {
+        List<AdvertDTO> adverts = advertService.getAllByCreatorId(id);
+        return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/location/{location}")
     public ResponseEntity<List<AdvertDTO>> searchAdvertsByLocation(@PathVariable String location) {
         List<AdvertDTO> adverts = advertService.searchAdvertByLocation(location);
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/search/price/{price}")
-    public ResponseEntity<List<AdvertDTO>> searchAdvertsByPrice(@PathVariable double price) {
-        List<AdvertDTO> adverts = advertService.sortByPrice(price);
+    @GetMapping("/price")
+    public ResponseEntity<List<AdvertDTO>> sortAdvertsByPrice() {
+        List<AdvertDTO> adverts = advertService.sortAdvertByPrice();
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/search/type/{type}")
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<AdvertDTO>> searchAdvertsByType(@PathVariable LodgingType type) {
         List<AdvertDTO> adverts = advertService.searchAdvertByType(type);
         return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<AdvertDTO>> getAll() {
+        List<AdvertDTO> adverts = advertService.getAll();
+        return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<AdvertDTO> getById(@PathVariable Long id) {
+        AdvertDTO advert = advertService.getById(id);
+        return new ResponseEntity<>(advert, HttpStatus.OK);
     }
 }

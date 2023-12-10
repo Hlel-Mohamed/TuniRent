@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AdvertRepository extends PostRepository<Advert> {
-    Optional<Advert> update(Advert advert, Long id);
+    @NotNull
+    Optional<Advert> findById(@NotNull Long id);
+    @NotNull
+    List<Advert> findAll();
+
     List<Advert> findByLocation(String location);
-    List<Advert> findByPriceLessThanEqualOrderByPrice(double price);
     List<Advert> findByType(LodgingType type);
 }

@@ -8,7 +8,11 @@ import java.util.List;
 public interface AdvertService extends PostService{
     AdvertDTO saveAdvert(Advert advert);
     AdvertDTO updateAdvert(Advert advert, Long id);
+    List<AdvertDTO> getAll();
+    List<AdvertDTO> getAllByCreatorId(Long creatorId);
+    AdvertDTO getById(Long id);
     List<AdvertDTO> searchAdvertByLocation(String location);
-    List<AdvertDTO> sortByPrice(double price);
+    List<AdvertDTO> sortAdvertByPrice();
     List<AdvertDTO> searchAdvertByType(LodgingType type);
+
 }
