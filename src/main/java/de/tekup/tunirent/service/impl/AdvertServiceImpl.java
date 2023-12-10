@@ -81,7 +81,7 @@ public class AdvertServiceImpl extends PostServiceImpl<Advert> implements Advert
     }
 
     @Override
-    public List<AdvertDTO> sortByPrice() {
+    public List<AdvertDTO> sortAdvertByPrice() {
         List<Advert> adverts = getRepository().findAll();
         return adverts.stream().map(this.advertMapper::convertToDTO).sorted(Comparator.comparing(AdvertDTO::getPrice)).toList();
     }
