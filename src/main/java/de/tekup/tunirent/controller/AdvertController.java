@@ -42,19 +42,25 @@ public class AdvertController {
         return ResponseEntity.ok("Advert deleted successfully!");
     }
 
-    @GetMapping("/search/location/{location}")
+    @GetMapping("/creator/{id}")
+    public ResponseEntity<List<AdvertDTO>> searchAdvertsByCreatorId(@PathVariable Long id) {
+        List<AdvertDTO> adverts = advertService.getAllByCreatorId(id);
+        return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    @GetMapping("/location/{location}")
     public ResponseEntity<List<AdvertDTO>> searchAdvertsByLocation(@PathVariable String location) {
         List<AdvertDTO> adverts = advertService.searchAdvertByLocation(location);
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/search/price")
-    public ResponseEntity<List<AdvertDTO>> searchAdvertsByPrice() {
-        List<AdvertDTO> adverts = advertService.sortByPrice();
+    @GetMapping("/price")
+    public ResponseEntity<List<AdvertDTO>> sortAdvertsByPrice() {
+        List<AdvertDTO> adverts = advertService.sortAdvertByPrice();
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/search/type/{type}")
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<AdvertDTO>> searchAdvertsByType(@PathVariable LodgingType type) {
         List<AdvertDTO> adverts = advertService.searchAdvertByType(type);
         return new ResponseEntity<>(adverts, HttpStatus.OK);
@@ -66,13 +72,9 @@ public class AdvertController {
         return new ResponseEntity<>(adverts, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            AdvertDTO adverts = advertService.getById(id);
-            return new ResponseEntity<>(adverts, HttpStatus.OK);
-        } catch (AdvertNotFoundException e) {
-            return new ResponseEntity<>("Advert not found", HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<AdvertDTO> getById(@PathVariable Long id) {
+        AdvertDTO advert = advertService.getById(id);
+        return new ResponseEntity<>(advert, HttpStatus.OK);
     }
 }

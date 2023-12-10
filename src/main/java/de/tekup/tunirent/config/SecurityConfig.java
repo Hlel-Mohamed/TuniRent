@@ -89,8 +89,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/advert/create").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/advert/update/**").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/advert/**").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/api/advert/search").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/advert/**").permitAll()
+
                                 .anyRequest()
                                 .authenticated()
                 ).authenticationProvider(authProvider())
